@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sms-code v-model="val" codeType="number" class="sms-code" @callback="callback"/>
+    <sms-code v-model="val" :formatter="formatter" codeType="number" class="my-sms-code" @callback="callback"/>
     {{ val }}
 
     <button @click="clickButton">dianwo</button>
@@ -13,7 +13,7 @@ export default {
   data() {
     return {
       list: [1,2,3],
-      val: '1233'
+      val: '123c3c'
     }
   },
   methods: {
@@ -22,6 +22,9 @@ export default {
     },
     callback() {
       console.log('callback')
+    },
+    formatter(val) {
+      return val.replace(/1/gi, '9')
     }
   }
 }
@@ -29,6 +32,6 @@ export default {
 
 <style lang="stylus" scoped>
 @import './assets/fonts/iconfont.css'
-  .sms-code
+  .my-sms-code
     width 290px
 </style>

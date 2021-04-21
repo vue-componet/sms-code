@@ -9,6 +9,8 @@
 </template>
 
 <script>
+const nullCharacterRegExp = RegExp('\s', 'gi')
+const numberRegExp = RegExp('[^0-9]', 'gi')
 export default {
   name: 'sms-code',
   props: {
@@ -26,6 +28,9 @@ export default {
     codeCount: {
       type: Number,
       default: 6
+    },
+    formatter: {
+      type: Function
     }
   },
   data() {
@@ -51,13 +56,27 @@ export default {
           this.$emit('callback')
         }
       }
+    },
+    inputValue: {
+      handler: function(newVal, oldVal) {
+        if (newVal !== oldVal) {
+          this.$emit('input', newVal)
+        }
+      },
+      immediate: true
     }
   },
   methods: {
     init(val) {
-      let v = val.replace(/\s/gi, '')
+      let v = val.replace(nullCharacterRegExp, '')
       if (v) {
-        if (this.codeType === 'number' && !/^[0-9]*$/.test(v)) v = ''
+        if (this.codeType === 'number') {
+          v = this.formatterNumber(v)
+        }
+
+        if (this.formatter) {
+          v = this.formatter(v)
+        }
       }
 
       let vArr = v.split('')
@@ -73,18 +92,16 @@ export default {
       }
     },
     input(e) {
-      let inputVal = e.target.value.replace(/\s/gi, '').substring(0, this.codeCount)
-      if (this.codeType === 'number') {
-        inputVal = this.formatterNumber(inputVal)
-      }
+      let inputVal = e.target.value.replace(nullCharacterRegExp, '').substring(0, this.codeCount)
       
       this.inputValue = inputVal
-      this.$emit('input', inputVal)
     },
+
+    // ---------------------------- utils ---------------------
     formatterNumber(val) {
-      console.log('formatter', val)
-      return val.replace(/[^0-9]/gi, '')
+      return val.replace(numberRegExp, '')
     }
+    
   }
 }
 </script>

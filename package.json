@@ -1,9 +1,12 @@
 {
-  "name": "sms-code",
+  "name": "vue-sms-code",
   "version": "1.0.0",
   "description": "",
   "private": true,
   "main": "lib/button.min.js",
+  "engines": {
+    "vue": "^2.6.11"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development PORT=8080 webpack-dev-server --inline --config webpack.config.js",
     "build:examples": "cross-env NODE_ENV=production webpack --config webpack.config.js",
