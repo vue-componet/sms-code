@@ -1,11 +1,19 @@
 <template>
-  <div class="sms-code" @click="clickItem(v)">
+  <div class="sms-code" @click="componentFocus">
     <div v-for="(v, i) in valueArr" :key="i" :class="['sms-code__item', { active: i === currentIndex }]">
-      <span v-show="isShowDot && v.value" class="sms-code__item_dot"></span>
-      <span v-show="!isShowDot" >{{ v.value }}</span>
+      <span v-show="secret && v.value" class="sms-code__item_dot"></span>
+      <span v-show="!secret" >{{ v.value }}</span>
       <span v-show="i === currentIndex && showCursor" :class="['sms-code__item_cursor', { ismargin: v.value }]"></span>
     </div>
-    <input v-model="inputValue" type="text" class="sms-code__input" ref="smsCodeInput" @input="input($event)">
+    <input
+      v-model="inputValue"
+      type="text"
+      class="sms-code__input"
+      ref="smsCodeInput"
+      @input="input($event)"
+      @focus="isFocus = true"
+      @blur="isFocus = false"
+    />
   </div>
 </template>
 
@@ -15,25 +23,40 @@ const numberRegExp = RegExp('[^0-9]', 'gi')
 export default {
   name: 'sms-code',
   props: {
+    // v-model,绑定值
     value: {
       type: String,
       default: ''
     },
+    // code类型，默认提供text|number两种类型，可通过formatter自定义
     codeType: {
       type: String,
       default: 'text',
       validator: (v) => {
-        return ['text', 'number', 'password'].includes(v)
+        return ['text', 'number'].includes(v)
       }
     },
+    // code长度，默认6位数
     codeCount: {
       type: Number,
       default: 6
     },
+    // 是否密文显示
+    secret: {
+      type: Boolean,
+      default: false
+    },
+    // 是否显示光标
     showCursor: {
       type: Boolean,
-      default: true
+      default: false
     },
+    // 是否自动聚焦
+    autoFocus: {
+      type: Boolean,
+      default: false
+    },
+    // 对输入内容处理
     formatter: {
       type: Function
     }
@@ -41,19 +64,27 @@ export default {
   data() {
     return {
       inputValue: '',
-      currentIndex: 0,
-      valueLength: 0,
+      isFocus: false,
       valueArr: []
     }
   },
   computed: {
-    isShowDot() {
-      return this.codeType === 'password'
+    currentIndex() {
+      if (this.isFocus) {
+        let length = this.inputValue.length
+        if (length === this.codeCount) {
+          return this.codeCount - 1
+        } else {
+          return length
+        }
+      } else {
+        return -1
+      }
     }
   },
   watch: {
     value: {
-      handler: 'init',
+      handler: 'rander',
       immediate: true
     },
     currentIndex: {
@@ -72,8 +103,16 @@ export default {
       immediate: true
     }
   },
+  mounted() {
+    if (this.autoFocus) {
+      this.componentFocus()
+    }
+  },
   methods: {
-    init(val) {
+    /**
+     * 渲染函数
+     */
+    rander(val) {
       let v = val.replace(nullCharacterRegExp, '')
       if (v) {
         if (this.codeType === 'number') {
@@ -87,8 +126,6 @@ export default {
 
       let vArr = v.split('')
       this.inputValue = v
-      this.valueLength = vArr.length
-      this.computeCurrentIndex()
 
       this.valueArr = []
       for (let i = 0; i < this.codeCount; i++) {
@@ -98,27 +135,27 @@ export default {
         })
       }
     },
+    /**
+     * input
+     */
     input(e) {
       let inputVal = e.target.value.replace(nullCharacterRegExp, '').substring(0, this.codeCount)
-      
       this.inputValue = inputVal
     },
-    clickItem() {
+    /**
+     * 组件聚焦
+     */
+    componentFocus() {
       this.$refs.smsCodeInput.focus()
-      this.computeCurrentIndex()
     },
 
     // ---------------------------- utils ---------------------
+    /**
+     * 处理number类型
+     * @param {string} val 输入内容
+     */
     formatterNumber(val) {
       return val.replace(numberRegExp, '')
-    },
-
-    computeCurrentIndex() {
-      if (this.valueLength === this.codeCount) {
-        this.currentIndex = this.codeCount - 1
-      } else {
-        this.currentIndex = this.valueLength
-      }
     }
     
   }

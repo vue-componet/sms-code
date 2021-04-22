@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sms-code v-model="val" :formatter="formatter" codeType="password" class="my-sms-code" @callback="callback"/>
+    <sms-code v-model="val" :formatter="formatter" :codeCount="count" codeType="number" class="my-sms-code" @callback="callback"/>
     {{ val }}
 
     <button @click="clickButton">dianwo</button>
@@ -13,12 +13,14 @@ export default {
   data() {
     return {
       list: [1,2,3],
-      val: '123c3c'
+      val: '123c3c',
+      count: 6
     }
   },
   methods: {
     clickButton() {
       this.val = '456'
+      this.count = 7
     },
     callback() {
       console.log('callback')
