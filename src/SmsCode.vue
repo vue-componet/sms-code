@@ -1,10 +1,11 @@
 <template>
-  <div class="sms-code">
+  <div class="sms-code" @click="clickItem(v)">
     <div v-for="(v, i) in valueArr" :key="i" :class="['sms-code__item', { active: i === currentIndex }]">
-      <span v-show="isShowDot" class="sms-code__item_dot"></span>
+      <span v-show="isShowDot && v.value" class="sms-code__item_dot"></span>
       <span v-show="!isShowDot" >{{ v.value }}</span>
+      <span v-show="i === currentIndex && showCursor" :class="['sms-code__item_cursor', { ismargin: v.value }]"></span>
     </div>
-    <input v-model="inputValue" type="text" class="sms-code__input" @input="input($event)">
+    <input v-model="inputValue" type="text" class="sms-code__input" ref="smsCodeInput" @input="input($event)">
   </div>
 </template>
 
@@ -29,6 +30,10 @@ export default {
       type: Number,
       default: 6
     },
+    showCursor: {
+      type: Boolean,
+      default: true
+    },
     formatter: {
       type: Function
     }
@@ -37,6 +42,7 @@ export default {
     return {
       inputValue: '',
       currentIndex: 0,
+      valueLength: 0,
       valueArr: []
     }
   },
@@ -81,7 +87,8 @@ export default {
 
       let vArr = v.split('')
       this.inputValue = v
-      this.currentIndex = vArr.length
+      this.valueLength = vArr.length
+      this.computeCurrentIndex()
 
       this.valueArr = []
       for (let i = 0; i < this.codeCount; i++) {
@@ -96,10 +103,22 @@ export default {
       
       this.inputValue = inputVal
     },
+    clickItem() {
+      this.$refs.smsCodeInput.focus()
+      this.computeCurrentIndex()
+    },
 
     // ---------------------------- utils ---------------------
     formatterNumber(val) {
       return val.replace(numberRegExp, '')
+    },
+
+    computeCurrentIndex() {
+      if (this.valueLength === this.codeCount) {
+        this.currentIndex = this.codeCount - 1
+      } else {
+        this.currentIndex = this.valueLength
+      }
     }
     
   }
@@ -112,12 +131,13 @@ export default {
     display flex
     justify-content space-between
     align-items center
+    overflow hidden
     &__input
       position absolute
-      top 0
-      left 0 
-      width 100%
-      height 100%
+      top 99999px
+      left 99999px
+      width 0
+      height 0
       margin 0
       padding 0
       border none
@@ -140,4 +160,17 @@ export default {
         height 8px
         border-radius 8px
         background-color #666
+      &_cursor
+        display block
+        width 1px
+        height 50%
+        background-color #999
+        animation cursorTwinkle .6s infinite alternate
+        &.ismargin
+          margin-left 2px
+@keyframes cursorTwinkle
+  0% 
+    opacity 1
+  100%
+    opacity 0
 </style>

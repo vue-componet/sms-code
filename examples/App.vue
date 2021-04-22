@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sms-code v-model="val" :formatter="formatter" codeType="number" class="my-sms-code" @callback="callback"/>
+    <sms-code v-model="val" :formatter="formatter" codeType="password" class="my-sms-code" @callback="callback"/>
     {{ val }}
 
     <button @click="clickButton">dianwo</button>
