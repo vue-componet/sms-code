@@ -1,11 +1,11 @@
 module.exports = {
-  title: 'Vue-component-template',
+  title: 'vue-sms-code',
   description: '如非软弱,怎会连触手可及的幸福也要放弃?--纵力量绵薄,也要筑起通往梦想的桥梁！',
   // 注入到当前页面的 HTML <head> 中的标签
   head: [
     ['link', { rel: 'icon', href: '/favicon.png' }], // 增加一个自定义的 favicon(网页标签的图标)
   ],
-  base: '/vue-component-template/', // 这是部署到服务器的相关配置
+  base: '/sms-code/', // 这是部署到服务器的相关配置
   markdown: {
     lineNumbers: false // 代码块显示行号
   },
