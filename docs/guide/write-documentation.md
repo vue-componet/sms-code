@@ -1,4 +1,4 @@
-# vue-sms-code
+# vue-sms-codes
 
 <baseComponent-codeBox title="基础用法" description="默认6位任何字符的code">
   <demo-default></demo-default>

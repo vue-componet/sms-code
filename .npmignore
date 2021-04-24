@@ -1,0 +1,13 @@
+.git/
+.vscode/
+.history/
+.idea/
+
+docs/
+examples/
+node_modules/
+
+webpack.config.js
+yarn.lock
+.babelrc
+.gitignore

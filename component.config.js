@@ -1,3 +1,3 @@
 module.exports = {
-  name: 'button' // 组件名
+  name: 'sms-code' // 组件名
 }

@@ -13,7 +13,7 @@
 ## 安装
 
 ```shell
-npm install --save vue-sms-code
+npm install --save vue-sms-codes
 ```
 
 ## 组件props
@@ -35,4 +35,4 @@ npm install --save vue-sms-code
 | callback | code | code输入完成，返回输入的code码 |
 
 ## 详细文档
-> 具体用法请查看[vue-sms-code文档](https://vue-componet.github.io/sms-code)
+> 具体用法请查看[vue-sms-codes文档](https://vue-componet.github.io/sms-code)

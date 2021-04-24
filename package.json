@@ -1,9 +1,9 @@
 {
-  "name": "vue-sms-code",
-  "version": "1.0.0",
-  "description": "",
-  "private": true,
-  "main": "lib/button.min.js",
+  "name": "vue-sms-codes",
+  "version": "0.0.2",
+  "description": "vue-sms-codes,验证码输入框",
+  "private": false,
+  "main": "lib/sms-code.min.js",
   "engines": {
     "vue": "^2.6.11"
   },
@@ -14,8 +14,8 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
-  "author": "周东杰 <384168902@qq.com>",
-  "license": "ISC",
+  "author": "dongdongjie <384168902@qq.com>",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
