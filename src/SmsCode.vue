@@ -2,7 +2,7 @@
   <div class="sms-code" @click="componentFocus">
     <div v-for="(v, i) in valueArr" :key="i" :class="['sms-code__item', { active: i === currentIndex }]">
       <span v-show="secret && v.value" class="sms-code__item_dot"></span>
-      <span v-show="!secret" >{{ v.value }}</span>
+      <span v-show="!secret" class="sms-code__item_text">{{ v.value }}</span>
       <span v-show="i === currentIndex && showCursor" :class="['sms-code__item_cursor', { ismargin: v.value }]"></span>
     </div>
     <input
@@ -18,15 +18,16 @@
 </template>
 
 <script>
-const nullCharacterRegExp = RegExp('\s', 'gi')
-const numberRegExp = RegExp('[^0-9]', 'gi')
+const nullCharacterRegExp = RegExp(/\s/, 'gi')
+const numberRegExp = RegExp(/[^0-9]/, 'gi')
 export default {
   name: 'sms-code',
   props: {
     // v-model,绑定值
     value: {
       type: String,
-      default: ''
+      default: '',
+      required: true
     },
     // code类型，默认提供text|number两种类型，可通过formatter自定义
     codeType: {
@@ -84,23 +85,41 @@ export default {
   },
   watch: {
     value: {
-      handler: 'rander',
-      immediate: true
-    },
-    currentIndex: {
       handler: function(val) {
-        if (val === this.codeCount) {
-          this.$emit('callback')
-        }
-      }
+        let v = this.formatters(val)
+        this.rander(v)
+        this.inputValue = v
+      },
+      immediate: true
     },
     inputValue: {
       handler: function(newVal, oldVal) {
         if (newVal !== oldVal) {
           this.$emit('input', newVal)
+          if (newVal.length === this.codeCount) {
+            this.$emit('callback', newVal)
+          }
         }
       },
       immediate: true
+    },
+    codeType: {
+      handler: function() {
+        let v = this.formatters(this.value)
+        this.inputValue = v
+        this.componentFocus()
+      }
+    },
+    codeCount: {
+      handler: function() {
+        let v = this.formatters(this.value)
+        if (v === this.value) {
+          this.rander(v)
+        } else {
+          this.inputValue = v
+        }
+        this.componentFocus()
+      }
     }
   },
   mounted() {
@@ -113,19 +132,7 @@ export default {
      * 渲染函数
      */
     rander(val) {
-      let v = val.replace(nullCharacterRegExp, '')
-      if (v) {
-        if (this.codeType === 'number') {
-          v = this.formatterNumber(v)
-        }
-
-        if (this.formatter) {
-          v = this.formatter(v)
-        }
-      }
-
-      let vArr = v.split('')
-      this.inputValue = v
+      let vArr = val.split('')
 
       this.valueArr = []
       for (let i = 0; i < this.codeCount; i++) {
@@ -139,7 +146,7 @@ export default {
      * input
      */
     input(e) {
-      let inputVal = e.target.value.replace(nullCharacterRegExp, '').substring(0, this.codeCount)
+      let inputVal = this.formatters(e.target.value)
       this.inputValue = inputVal
     },
     /**
@@ -156,6 +163,19 @@ export default {
      */
     formatterNumber(val) {
       return val.replace(numberRegExp, '')
+    },
+    formatters(val) {
+      let v = val.replace(nullCharacterRegExp, '').substring(0, this.codeCount)
+      if (v) {
+        if (this.codeType === 'number') {
+          v = this.formatterNumber(v)
+        }
+
+        if (this.formatter) {
+          v = this.formatter(v)
+        }
+      }
+      return v
     }
     
   }
@@ -170,9 +190,9 @@ export default {
     align-items center
     overflow hidden
     &__input
-      position absolute
-      top 99999px
-      left 99999px
+      position fixed
+      top 80px
+      left 0
       width 0
       height 0
       margin 0
@@ -197,6 +217,8 @@ export default {
         height 8px
         border-radius 8px
         background-color #666
+      &_text
+        color 12px
       &_cursor
         display block
         width 1px

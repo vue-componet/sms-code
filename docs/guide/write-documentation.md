@@ -1,87 +1,65 @@
-# 编写使用文档
+# vue-sms-code
 
-## 开始为你的组件编写使用文档吧
-一个好的组件，优秀的文档说明必不可少。
-
-## 在`vuepress`中引入你的组件
-找到项目下 `docs/.vuepress/enhanceApp.js`, 像开发工程项目一样引入你的组件;
-这里以引入elementUI 为例, 加入下面的代码
-``` javascript
-...
-import ElementUI from 'element-ui'
-
-export default ({
-    ...
-}) => {
-  // ...做一些其他的应用级别的优化
-  Vue.use(ElementUI)
-}
-```
-
-## 编写demo
-引入完成后，在 `docs/.vuepress/components/demo/` 下编写你的demo
-新建vue文件编写demo
-``` vue
-<template>
-  <div>
-    <el-button />
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'MyButton'
-}
-</script>
-
-<style lang="stylus" scoped>
-</style>
-```
-
-## 最后在你的md文件中引用demo
-``` md
-<baseComponent-codeBox title="这是title" description="这是描述">
-  <demo-MyButton></demo-MyButton> // 这里需要把你的路径用-的形式把demo文件夹名称拼接上
+<baseComponent-codeBox title="基础用法" description="默认6位任何字符的code">
+  <demo-default></demo-default>
   <highlight-code slot="codeText" lang="vue">
-<<< @/docs/.vuepress/components/demo/你新建的vue文件
+<<< @/docs/.vuepress/components/demo/default.vue
   </highlight-code>
 </baseComponent-codeBox>
-```
-or
 
-``` md
-<baseComponent-codeBox title="这是title" description="这是描述">
-  <demo-MyButton></demo-MyButton> // 这里需要把你的路径用-的形式把demo文件夹名称拼接上
+<baseComponent-codeBox title="code类型" description="code-type默认为text类型，可切换为number类型只能输入数字，也可通过formatter传入方法自己实现类型处理">
+  <demo-codeType></demo-codeType>
   <highlight-code slot="codeText" lang="vue">
-    <!-- 这里包裹你的示例代码 S -->
-    <template>
-      <div>
-        <m-button />
-      </div>
-    </template>
-
-    <script>
-    export default {
-      name: 'MyButton'
-    }
-    </script>
-
-    <style lang="stylus" scoped>
-    .button
-      padding 10px
-      border 1px solid #ccc
-      font-size 12px
-    </style>
-    <!-- 这里包裹你的示例代码 E -->
+<<< @/docs/.vuepress/components/demo/codeType.vue
   </highlight-code>
 </baseComponent-codeBox>
-```
 
-
-## 效果如下
-<baseComponent-codeBox title="这是title" description="这是描述">
-  <demo-MyButton></demo-MyButton>
+<baseComponent-codeBox title="密文模式" description="设置secret属性为true,可开启密文模式，输入内容不可见">
+  <demo-secret></demo-secret>
   <highlight-code slot="codeText" lang="vue">
-<<<@/docs/.vuepress/components/demo/MyButton.vue
+<<< @/docs/.vuepress/components/demo/secret.vue
+  </highlight-code>
+</baseComponent-codeBox>
+
+<baseComponent-codeBox title="显示输入光标" description="设置show-cursor属性为true,显示光标">
+  <demo-showCursor></demo-showCursor>
+  <highlight-code slot="codeText" lang="vue">
+<<< @/docs/.vuepress/components/demo/showCursor.vue
+  </highlight-code>
+</baseComponent-codeBox>
+
+<baseComponent-codeBox title="设置code位数" description="设置设置code-count属性,改变code长度，默认为6位">
+  <demo-codeCount></demo-codeCount>
+  <highlight-code slot="codeText" lang="vue">
+<<< @/docs/.vuepress/components/demo/codeCount.vue
+  </highlight-code>
+</baseComponent-codeBox>
+
+<baseComponent-codeBox title="自动聚焦" description="设置设置auto-focus属性为true,组件渲染完成自动聚焦">
+  <demo-autoFocus></demo-autoFocus>
+  <highlight-code slot="codeText" lang="vue">
+<<< @/docs/.vuepress/components/demo/autoFocus.vue
+  </highlight-code>
+</baseComponent-codeBox>
+
+<baseComponent-codeBox title="formatter" description="自定义输入过滤规则">
+  <demo-formatter></demo-formatter>
+  <highlight-code slot="codeText" lang="vue">
+<<< @/docs/.vuepress/components/demo/formatter.vue
+  </highlight-code>
+</baseComponent-codeBox>
+
+
+<baseComponent-codeBox title="输入完成回调" description="输入完成回调函数，处理业务逻辑，当然你也可以在你的页面中监听绑定的v-model变量实现业务处理">
+  <demo-callback></demo-callback>
+  <highlight-code slot="codeText" lang="vue">
+<<< @/docs/.vuepress/components/demo/callback.vue
+  </highlight-code>
+</baseComponent-codeBox>
+
+<baseComponent-codeBox title="自定义样式" description="设置全局class，改变code组件默认样式">
+  <demo-diyClass></demo-diyClass>
+  <highlight-code slot="codeText" lang="vue">
+<<< @/docs/.vuepress/components/demo/diyClass.vue
   </highlight-code>
 </baseComponent-codeBox>
