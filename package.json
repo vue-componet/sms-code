@@ -1,6 +1,6 @@
 {
   "name": "vue-sms-codes",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "vue-sms-codes,验证码输入框",
   "private": false,
   "main": "lib/sms-code.min.js",
