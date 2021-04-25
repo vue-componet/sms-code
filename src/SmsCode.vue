@@ -39,7 +39,7 @@ export default {
     },
     // code长度，默认6位数
     codeCount: {
-      type: Number,
+      type: [Number, String],
       default: 6
     },
     // 是否密文显示
@@ -73,8 +73,9 @@ export default {
     currentIndex() {
       if (this.isFocus) {
         let length = this.inputValue.length
-        if (length === this.codeCount) {
-          return this.codeCount - 1
+        let count = Number(this.codeCount)
+        if (length === count) {
+          return count - 1
         } else {
           return length
         }
@@ -96,7 +97,7 @@ export default {
       handler: function(newVal, oldVal) {
         if (newVal !== oldVal) {
           this.$emit('input', newVal)
-          if (newVal.length === this.codeCount) {
+          if (newVal.length === Number(this.codeCount)) {
             this.$emit('callback', newVal)
           }
         }
@@ -135,7 +136,7 @@ export default {
       let vArr = val.split('')
 
       this.valueArr = []
-      for (let i = 0; i < this.codeCount; i++) {
+      for (let i = 0; i < Number(this.codeCount); i++) {
         this.valueArr.push({
           key: i,
           value: i < vArr.length ? vArr[i] : ''
@@ -165,7 +166,7 @@ export default {
       return val.replace(numberRegExp, '')
     },
     formatters(val) {
-      let v = val.replace(nullCharacterRegExp, '').substring(0, this.codeCount)
+      let v = val.replace(nullCharacterRegExp, '').substring(0, Number(this.codeCount))
       if (v) {
         if (this.codeType === 'number') {
           v = this.formatterNumber(v)
@@ -191,10 +192,8 @@ export default {
     overflow hidden
     &__input
       position fixed
-      top 80px
-      left 0
-      width 0
-      height 0
+      top -9999px
+      left -9999px
       margin 0
       padding 0
       border none

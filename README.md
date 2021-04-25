@@ -22,7 +22,7 @@ npm install --save vue-sms-codes
 |--------|-----|--------|-------|----------|-----|
 | v-model | string | - | - | 是 | 绑定值 |
 | code-type | string | 'text' | 'text','number' | 否 | 输入类型 |
-| code-count | number | 6 | - | 否 | code长度
+| code-count | number/string | 6 | - | 否 | code长度
 | secret | boolean | false | true/false | 否 | 是否密文显示 |
 | showCursor | boolean | false | true/false | 否 | 是否显示光标 |
 | autoFocus | boolean | false | true/false | 否 | 是否自动聚焦 |
