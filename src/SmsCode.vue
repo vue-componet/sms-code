@@ -154,6 +154,7 @@ export default {
      * 组件聚焦
      */
     componentFocus() {
+      this.$refs.smsCodeInput.selectionStart = this.inputValue.length
       this.$refs.smsCodeInput.focus()
     },
 
