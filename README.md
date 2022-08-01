@@ -1,5 +1,5 @@
 # sms-code `vue`
-仿京东淘宝验证码输入
+仿京东淘宝验证码输入 [在线文档及体验](https://vue-componet.github.io/sms-code/)
 
 ## 部分效果预览
 ![default](http://img.coderdong.cn/VueComponent/sms-code__default.gif)
